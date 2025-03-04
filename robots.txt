@@ -1,0 +1,8 @@
+User-agent: *
+Allow: /
+Sitemap: https://freenetly.com/sitemap.xml
+
+# Optimize crawling
+Disallow: /js/
+Disallow: /css/
+Disallow: /images/
