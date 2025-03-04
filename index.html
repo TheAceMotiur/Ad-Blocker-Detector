@@ -86,299 +86,396 @@
 
     <!-- Main Content -->
     <main class="flex-grow">
-        <!-- Top AdSense -->
-        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+        <!-- Top Full-Width Banner Ad -->
+        <div class="w-full py-4 bg-white shadow-sm">
             <ins class="adsbygoogle"
                 style="display:block"
                 data-ad-client="ca-pub-9354746037074515"
                 data-ad-slot="4878379783"
                 data-ad-format="auto"
                 data-full-width-responsive="true"></ins>
-            <script>
-                (adsbygoogle = window.adsbygoogle || []).push({});
-            </script>
         </div>
 
-        <!-- Introduction Section -->
-        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-            <div class="bg-white p-6 rounded-lg shadow mb-8">
-                <h2 class="text-2xl font-bold mb-4">Protect Your Website Revenue</h2>
-                <div class="prose max-w-none">
-                    <p class="mb-4">Our Ad Blocker Detector helps you protect your website's revenue by detecting and responding to ad blockers. With customizable messages and appearance options, you can effectively communicate with users while maintaining a professional look.</p>
-                    
-                    <h3 class="text-xl font-semibold mb-3">Key Features:</h3>
-                    <ul class="list-disc pl-6 mb-4">
-                        <li>Advanced detection algorithms</li>
-                        <li>Customizable warning messages</li>
-                        <li>Beautiful blur effects</li>
-                        <li>Responsive design</li>
-                        <li>Easy integration</li>
-                    </ul>
-                </div>
-
-                <!-- Social Share Buttons -->
-                <div class="border-t pt-4 mt-4">
-                    <h4 class="text-sm font-semibold mb-3">Share this tool:</h4>
-                    <div class="flex space-x-4">
-                        <button onclick="shareOnSocial('twitter')" class="text-blue-400 hover:text-blue-600">
-                            <i class="fab fa-twitter fa-lg"></i>
-                        </button>
-                        <button onclick="shareOnSocial('facebook')" class="text-blue-600 hover:text-blue-800">
-                            <i class="fab fa-facebook fa-lg"></i>
-                        </button>
-                        <button onclick="shareOnSocial('linkedin')" class="text-blue-700 hover:text-blue-900">
-                            <i class="fab fa-linkedin fa-lg"></i>
-                        </button>
-                        <button onclick="shareOnSocial('reddit')" class="text-orange-600 hover:text-orange-700">
-                            <i class="fab fa-reddit fa-lg"></i>
-                        </button>
-                        <button onclick="shareOnSocial('whatsapp')" class="text-green-500 hover:text-green-700">
-                            <i class="fab fa-whatsapp fa-lg"></i>
-                        </button>
-                        <button onclick="shareOnSocial('telegram')" class="text-blue-500 hover:text-blue-700">
-                            <i class="fab fa-telegram fa-lg"></i>
-                        </button>
-                    </div>
-                </div>
-            </div>
+        <!-- Left Sidebar Ad -->
+        <div class="hidden xl:block fixed left-4 top-20 w-[160px]">
+            <ins class="adsbygoogle"
+                style="display:inline-block;width:160px;height:600px"
+                data-ad-client="ca-pub-9354746037074515"
+                data-ad-slot="1234567891"></ins>
         </div>
 
-        <div id="app" class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-            <div class="bg-white p-6 rounded-lg shadow">
-                <h1 class="text-2xl font-bold mb-6">Ad Blocker Detector Generator</h1>
+        <!-- Right Sidebar Ad -->
+        <div class="hidden xl:block fixed right-4 top-20 w-[160px]">
+            <ins class="adsbygoogle"
+                style="display:inline-block;width:160px;height:600px"
+                data-ad-client="ca-pub-9354746037074515"
+                data-ad-slot="1234567892"></ins>
+        </div>
 
-                <!-- Options -->
-                <div class="mb-6 space-y-4">
-                    <!-- Message -->
-                    <div>
-                        <label class="block mb-2 font-bold">Warning Message</label>
-                        <input 
-                            type="text" 
-                            v-model="options.warningMessage"
-                            class="w-full p-3 border border-gray-300 rounded"
-                            placeholder="Please disable your ad blocker to continue"
-                        >
-                    </div>
-
-                    <!-- Title -->
-                    <div>
-                        <label class="block mb-2 font-bold">Warning Title</label>
-                        <input 
-                            type="text" 
-                            v-model="options.warningTitle"
-                            class="w-full p-3 border border-gray-300 rounded"
-                            placeholder="🛡️ Ad Blocker Detected"
-                        >
-                    </div>
-
-                    <!-- Enhanced Appearance Settings -->
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <!-- Opacity Control -->
-                        <div>
-                            <label class="block mb-2 font-bold">Background Opacity</label>
-                            <div class="space-y-2">
-                                <input 
-                                    type="range" 
-                                    v-model.number="options.opacity" 
-                                    min="0" 
-                                    max="1" 
-                                    step="0.05"
-                                    class="w-full"
-                                >
-                                <div class="text-sm text-gray-600">
-                                    {{ Math.round(options.opacity * 100) }}% opacity
-                                </div>
-                            </div>
-                            <!-- Live Preview -->
-                            <div 
-                                class="mt-2 h-16 rounded border"
-                                :style="{
-                                    backgroundColor: `rgba(255, 255, 255, ${options.opacity})`
-                                }"
-                            ></div>
-                        </div>
-
-                        <!-- Blur Control -->
-                        <div>
-                            <label class="block mb-2 font-bold">Blur Effect</label>
-                            <div class="space-y-2">
-                                <div class="flex items-center justify-between">
-                                    <label class="flex items-center">
-                                        <input 
-                                            type="checkbox" 
-                                            v-model="options.blur"
-                                            class="h-4 w-4 text-blue-600"
-                                        >
-                                        <span class="ml-2">Enable blur effect</span>
-                                    </label>
-                                    <input 
-                                        type="number" 
-                                        v-model.number="options.blurAmount" 
-                                        :disabled="!options.blur"
-                                        min="1"
-                                        max="20"
-                                        class="w-20 p-1 border rounded"
-                                    >
-                                </div>
-                                <!-- Live Preview with dynamic content -->
-                                <div class="relative h-24 overflow-hidden rounded border">
-                                    <!-- Background content -->
-                                    <div class="absolute inset-0 p-3 text-sm bg-gray-50">
-                                        <div class="grid grid-cols-3 gap-2">
-                                            <div v-for="i in 6" :key="i" 
-                                                class="h-6 bg-gray-200 rounded animate-pulse"
-                                            ></div>
-                                        </div>
-                                    </div>
-                                    <!-- Blur overlay -->
-                                    <div 
-                                        class="absolute inset-0"
-                                        :style="{
-                                            backgroundColor: `rgba(255, 255, 255, ${options.opacity})`,
-                                            backdropFilter: options.blur ? `blur(${options.blurAmount}px)` : 'none'
-                                        }"
-                                    ></div>
-                                    <!-- Preview text -->
-                                    <div class="absolute inset-0 flex items-center justify-center">
-                                        <span class="text-sm font-medium">
-                                            Preview with {{ options.blur ? `${options.blurAmount}px blur` : 'no blur' }}
-                                        </span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Generated Code -->
-                <div class="mb-6">
-                    <label class="block mb-2 font-bold">Generated Code</label>
-                    <pre class="bg-gray-50 p-4 rounded border overflow-x-auto"><code>{{ generatedCode }}</code></pre>
-                </div>
-
-                <!-- Copy Button -->
-                <button
-                    @click="copyCode"
-                    :disabled="isCopying"
-                    :class="[
-                        'font-bold py-3 px-6 rounded text-lg transition duration-300',
-                        !isCopying ? 'bg-blue-600 hover:bg-blue-700 text-white' : 'bg-gray-300 cursor-not-allowed text-gray-500'
-                    ]"
-                >
-                    {{ copyButtonText }}
-                </button>
-            </div>
-
-            <!-- Additional Information Section -->
-            <div class="bg-white p-6 rounded-lg shadow mt-8">
-                <h2 class="text-2xl font-bold mb-6">Why Choose Our Ad Blocker Detector?</h2>
-                <div class="space-y-4">
-                    <p>Ad blocking costs publishers billions in revenue each year. Our tool helps you recover that revenue by detecting ad blockers and encouraging users to whitelist your site.</p>
-                    
-                    <div>
-                        <h3 class="text-xl font-semibold mb-3">Benefits:</h3>
-                        <ul class="list-disc pl-6 space-y-2">
-                            <li>Increased ad revenue</li>
-                            <li>Better user engagement</li>
-                            <li>Professional appearance</li>
-                            <li>Easy implementation</li>
-                            <li>Customizable options</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-
-            <!-- In-article AdSense -->
-            <div class="my-8">
+        <!-- Main Content Container with Padding for Sidebars -->
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 xl:px-[200px]">
+            <!-- Secondary Banner Ad -->
+            <div class="py-4">
                 <ins class="adsbygoogle"
-                    style="display:block; text-align:center;"
-                    data-ad-layout="in-article"
-                    data-ad-format="fluid"
+                    style="display:block"
                     data-ad-client="ca-pub-9354746037074515"
-                    data-ad-slot="1234567890"></ins>
+                    data-ad-slot="4878379784"
+                    data-ad-format="auto"
+                    data-full-width-responsive="true"></ins>
+            </div>
+
+            <!-- Responsive Top Banner Ad -->
+            <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+                <ins class="adsbygoogle"
+                    style="display:block"
+                    data-ad-client="ca-pub-9354746037074515"
+                    data-ad-slot="4878379783"
+                    data-ad-format="auto"
+                    data-full-width-responsive="true"></ins>
+            </div>
+
+            <!-- Sidebar Ad (on larger screens) -->
+            <div class="hidden lg:block fixed right-4 top-20 w-[160px]">
+                <ins class="adsbygoogle"
+                    style="display:inline-block;width:160px;height:600px"
+                    data-ad-client="ca-pub-9354746037074515"
+                    data-ad-slot="1234567891"></ins>
+            </div>
+
+            <!-- Top AdSense -->
+            <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+                <ins class="adsbygoogle"
+                    style="display:block"
+                    data-ad-client="ca-pub-9354746037074515"
+                    data-ad-slot="4878379783"
+                    data-ad-format="auto"
+                    data-full-width-responsive="true"></ins>
                 <script>
                     (adsbygoogle = window.adsbygoogle || []).push({});
                 </script>
             </div>
 
-            <div class="bg-white p-6 rounded-lg shadow mt-8">
-                <h2 class="text-2xl font-bold mb-6">Complete Guide to Ad Blocker Detection</h2>
-                <div class="space-y-6">
-                    <div>
-                        <h3 class="text-xl font-semibold mb-3">How It Works</h3>
-                        <p class="text-gray-700">Our ad blocker detector uses advanced JavaScript techniques to identify when users have ad blocking software enabled. It monitors key ad-related elements and network requests to provide accurate detection.</p>
-                    </div>
-
-                    <div>
-                        <h3 class="text-xl font-semibold mb-3">Implementation Steps</h3>
-                        <ol class="list-decimal pl-6 space-y-2">
-                            <li>Copy the generated code from above</li>
-                            <li>Paste it into your website's HTML before the closing &lt;/body&gt; tag</li>
-                            <li>Customize the message and appearance options as needed</li>
-                            <li>Test your website with an ad blocker enabled</li>
-                        </ol>
-                    </div>
-
-                    <div>
-                        <h3 class="text-xl font-semibold mb-3">Browser Compatibility</h3>
-                        <ul class="list-disc pl-6 space-y-2">
-                            <li>Chrome 49+</li>
-                            <li>Firefox 52+</li>
-                            <li>Safari 10+</li>
-                            <li>Edge 79+</li>
-                            <li>Opera 36+</li>
+            <!-- Introduction Section -->
+            <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+                <div class="bg-white p-6 rounded-lg shadow mb-8">
+                    <h2 class="text-2xl font-bold mb-4">Protect Your Website Revenue</h2>
+                    <div class="prose max-w-none">
+                        <p class="mb-4">Our Ad Blocker Detector helps you protect your website's revenue by detecting and responding to ad blockers. With customizable messages and appearance options, you can effectively communicate with users while maintaining a professional look.</p>
+                        
+                        <h3 class="text-xl font-semibold mb-3">Key Features:</h3>
+                        <ul class="list-disc pl-6 mb-4">
+                            <li>Advanced detection algorithms</li>
+                            <li>Customizable warning messages</li>
+                            <li>Beautiful blur effects</li>
+                            <li>Responsive design</li>
+                            <li>Easy integration</li>
                         </ul>
                     </div>
+
+                    <!-- Social Share Buttons -->
+                    <div class="border-t pt-4 mt-4">
+                        <h4 class="text-sm font-semibold mb-3">Share this tool:</h4>
+                        <div class="flex space-x-4">
+                            <button onclick="shareOnSocial('twitter')" class="text-blue-400 hover:text-blue-600">
+                                <i class="fab fa-twitter fa-lg"></i>
+                            </button>
+                            <button onclick="shareOnSocial('facebook')" class="text-blue-600 hover:text-blue-800">
+                                <i class="fab fa-facebook fa-lg"></i>
+                            </button>
+                            <button onclick="shareOnSocial('linkedin')" class="text-blue-700 hover:text-blue-900">
+                                <i class="fab fa-linkedin fa-lg"></i>
+                            </button>
+                            <button onclick="shareOnSocial('reddit')" class="text-orange-600 hover:text-orange-700">
+                                <i class="fab fa-reddit fa-lg"></i>
+                            </button>
+                            <button onclick="shareOnSocial('whatsapp')" class="text-green-500 hover:text-green-700">
+                                <i class="fab fa-whatsapp fa-lg"></i>
+                            </button>
+                            <button onclick="shareOnSocial('telegram')" class="text-blue-500 hover:text-blue-700">
+                                <i class="fab fa-telegram fa-lg"></i>
+                            </button>
+                        </div>
+                    </div>
                 </div>
             </div>
 
-            <!-- FAQ Section for SEO -->
-            <div class="bg-white p-6 rounded-lg shadow mt-8">
-                <h2 class="text-2xl font-bold mb-6">Frequently Asked Questions</h2>
-                <div class="space-y-6">
-                    <div itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
-                        <h3 itemprop="name" class="text-xl font-semibold mb-2">How accurate is this ad blocker detector?</h3>
-                        <div itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
-                            <p itemprop="text" class="text-gray-700">Our detector is highly accurate, with a 99.9% success rate in identifying popular ad blockers including AdBlock, AdBlock Plus, uBlock Origin, and other major ad blocking solutions.</p>
+            <!-- Mid-Content Display Ad -->
+            <div class="my-8">
+                <ins class="adsbygoogle"
+                    style="display:block"
+                    data-ad-client="ca-pub-9354746037074515"
+                    data-ad-slot="4878379785"
+                    data-ad-format="rectangle"
+                    data-full-width-responsive="true"></ins>
+            </div>
+
+            <div id="app" class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+                <div class="bg-white p-6 rounded-lg shadow">
+                    <h1 class="text-2xl font-bold mb-6">Ad Blocker Detector Generator</h1>
+
+                    <!-- Options -->
+                    <div class="mb-6 space-y-4">
+                        <!-- Message -->
+                        <div>
+                            <label class="block mb-2 font-bold">Warning Message</label>
+                            <input 
+                                type="text" 
+                                v-model="options.warningMessage"
+                                class="w-full p-3 border border-gray-300 rounded"
+                                placeholder="Please disable your ad blocker to continue"
+                            >
+                        </div>
+
+                        <!-- Title -->
+                        <div>
+                            <label class="block mb-2 font-bold">Warning Title</label>
+                            <input 
+                                type="text" 
+                                v-model="options.warningTitle"
+                                class="w-full p-3 border border-gray-300 rounded"
+                                placeholder="🛡️ Ad Blocker Detected"
+                            >
+                        </div>
+
+                        <!-- Enhanced Appearance Settings -->
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <!-- Opacity Control -->
+                            <div>
+                                <label class="block mb-2 font-bold">Background Opacity</label>
+                                <div class="space-y-2">
+                                    <input 
+                                        type="range" 
+                                        v-model.number="options.opacity" 
+                                        min="0" 
+                                        max="1" 
+                                        step="0.05"
+                                        class="w-full"
+                                    >
+                                    <div class="text-sm text-gray-600">
+                                        {{ Math.round(options.opacity * 100) }}% opacity
+                                    </div>
+                                </div>
+                                <!-- Live Preview -->
+                                <div 
+                                    class="mt-2 h-16 rounded border"
+                                    :style="{
+                                        backgroundColor: `rgba(255, 255, 255, ${options.opacity})`
+                                    }"
+                                ></div>
+                            </div>
+
+                            <!-- Blur Control -->
+                            <div>
+                                <label class="block mb-2 font-bold">Blur Effect</label>
+                                <div class="space-y-2">
+                                    <div class="flex items-center justify-between">
+                                        <label class="flex items-center">
+                                            <input 
+                                                type="checkbox" 
+                                                v-model="options.blur"
+                                                class="h-4 w-4 text-blue-600"
+                                            >
+                                            <span class="ml-2">Enable blur effect</span>
+                                        </label>
+                                        <input 
+                                            type="number" 
+                                            v-model.number="options.blurAmount" 
+                                            :disabled="!options.blur"
+                                            min="1"
+                                            max="20"
+                                            class="w-20 p-1 border rounded"
+                                        >
+                                    </div>
+                                    <!-- Live Preview with dynamic content -->
+                                    <div class="relative h-24 overflow-hidden rounded border">
+                                        <!-- Background content -->
+                                        <div class="absolute inset-0 p-3 text-sm bg-gray-50">
+                                            <div class="grid grid-cols-3 gap-2">
+                                                <div v-for="i in 6" :key="i" 
+                                                    class="h-6 bg-gray-200 rounded animate-pulse"
+                                                ></div>
+                                            </div>
+                                        </div>
+                                        <!-- Blur overlay -->
+                                        <div 
+                                            class="absolute inset-0"
+                                            :style="{
+                                                backgroundColor: `rgba(255, 255, 255, ${options.opacity})`,
+                                                backdropFilter: options.blur ? `blur(${options.blurAmount}px)` : 'none'
+                                            }"
+                                        ></div>
+                                        <!-- Preview text -->
+                                        <div class="absolute inset-0 flex items-center justify-center">
+                                            <span class="text-sm font-medium">
+                                                Preview with {{ options.blur ? `${options.blurAmount}px blur` : 'no blur' }}
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
 
-                    <div itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
-                        <h3 itemprop="name" class="text-xl font-semibold mb-2">Will this slow down my website?</h3>
-                        <div itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
-                            <p itemprop="text" class="text-gray-700">No, our script is lightweight and optimized for performance. It loads asynchronously and typically adds less than 10kb to your page size.</p>
-                        </div>
+                    <!-- Generated Code -->
+                    <div class="mb-6">
+                        <label class="block mb-2 font-bold">Generated Code</label>
+                        <pre class="bg-gray-50 p-4 rounded border overflow-x-auto"><code>{{ generatedCode }}</code></pre>
                     </div>
 
-                    <div itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
-                        <h3 itemprop="name" class="text-xl font-semibold mb-2">Can users bypass this detection?</h3>
-                        <div itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
-                            <p itemprop="text" class="text-gray-700">While no detection method is 100% foolproof, our solution uses multiple detection techniques and regular updates to maintain high effectiveness against bypass attempts.</p>
+                    <!-- Copy Button -->
+                    <button
+                        @click="copyCode"
+                        :disabled="isCopying"
+                        :class="[
+                            'font-bold py-3 px-6 rounded text-lg transition duration-300',
+                            !isCopying ? 'bg-blue-600 hover:bg-blue-700 text-white' : 'bg-gray-300 cursor-not-allowed text-gray-500'
+                        ]"
+                    >
+                        {{ copyButtonText }}
+                    </button>
+                </div>
+
+                <!-- Additional Information Section -->
+                <div class="bg-white p-6 rounded-lg shadow mt-8">
+                    <h2 class="text-2xl font-bold mb-6">Why Choose Our Ad Blocker Detector?</h2>
+                    <div class="space-y-4">
+                        <p>Ad blocking costs publishers billions in revenue each year. Our tool helps you recover that revenue by detecting ad blockers and encouraging users to whitelist your site.</p>
+                        
+                        <div>
+                            <h3 class="text-xl font-semibold mb-3">Benefits:</h3>
+                            <ul class="list-disc pl-6 space-y-2">
+                                <li>Increased ad revenue</li>
+                                <li>Better user engagement</li>
+                                <li>Professional appearance</li>
+                                <li>Easy implementation</li>
+                                <li>Customizable options</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Native In-Feed Ad -->
+                <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 my-8">
+                    <ins class="adsbygoogle"
+                        style="display:block"
+                        data-ad-format="fluid"
+                        data-ad-layout-key="-gw-3+1f-3d+2z"
+                        data-ad-client="ca-pub-9354746037074515"
+                        data-ad-slot="1234567892"></ins>
+                </div>
+
+                <!-- In-article AdSense -->
+                <div class="my-8">
+                    <ins class="adsbygoogle"
+                        style="display:block; text-align:center;"
+                        data-ad-layout="in-article"
+                        data-ad-format="fluid"
+                        data-ad-client="ca-pub-9354746037074515"
+                        data-ad-slot="1234567890"></ins>
+                    <script>
+                        (adsbygoogle = window.adsbygoogle || []).push({});
+                    </script>
+                </div>
+
+                <div class="bg-white p-6 rounded-lg shadow mt-8">
+                    <h2 class="text-2xl font-bold mb-6">Complete Guide to Ad Blocker Detection</h2>
+                    <div class="space-y-6">
+                        <div>
+                            <h3 class="text-xl font-semibold mb-3">How It Works</h3>
+                            <p class="text-gray-700">Our ad blocker detector uses advanced JavaScript techniques to identify when users have ad blocking software enabled. It monitors key ad-related elements and network requests to provide accurate detection.</p>
+                        </div>
+
+                        <div>
+                            <h3 class="text-xl font-semibold mb-3">Implementation Steps</h3>
+                            <ol class="list-decimal pl-6 space-y-2">
+                                <li>Copy the generated code from above</li>
+                                <li>Paste it into your website's HTML before the closing &lt;/body&gt; tag</li>
+                                <li>Customize the message and appearance options as needed</li>
+                                <li>Test your website with an ad blocker enabled</li>
+                            </ol>
+                        </div>
+
+                        <div>
+                            <h3 class="text-xl font-semibold mb-3">Browser Compatibility</h3>
+                            <ul class="list-disc pl-6 space-y-2">
+                                <li>Chrome 49+</li>
+                                <li>Firefox 52+</li>
+                                <li>Safari 10+</li>
+                                <li>Edge 79+</li>
+                                <li>Opera 36+</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- FAQ Section for SEO -->
+                <div class="bg-white p-6 rounded-lg shadow mt-8">
+                    <h2 class="text-2xl font-bold mb-6">Frequently Asked Questions</h2>
+                    <div class="space-y-6">
+                        <div itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
+                            <h3 itemprop="name" class="text-xl font-semibold mb-2">How accurate is this ad blocker detector?</h3>
+                            <div itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
+                                <p itemprop="text" class="text-gray-700">Our detector is highly accurate, with a 99.9% success rate in identifying popular ad blockers including AdBlock, AdBlock Plus, uBlock Origin, and other major ad blocking solutions.</p>
+                            </div>
+                        </div>
+
+                        <div itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
+                            <h3 itemprop="name" class="text-xl font-semibold mb-2">Will this slow down my website?</h3>
+                            <div itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
+                                <p itemprop="text" class="text-gray-700">No, our script is lightweight and optimized for performance. It loads asynchronously and typically adds less than 10kb to your page size.</p>
+                            </div>
+                        </div>
+
+                        <div itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
+                            <h3 itemprop="name" class="text-xl font-semibold mb-2">Can users bypass this detection?</h3>
+                            <div itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
+                                <p itemprop="text" class="text-gray-700">While no detection method is 100% foolproof, our solution uses multiple detection techniques and regular updates to maintain high effectiveness against bypass attempts.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Add Performance Stats Section -->
+                <div class="bg-white p-6 rounded-lg shadow mt-8">
+                    <h2 class="text-2xl font-bold mb-6">Performance & Statistics</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        <div class="text-center">
+                            <div class="text-4xl font-bold text-blue-600">99.9%</div>
+                            <div class="text-gray-600 mt-2">Detection Accuracy</div>
+                        </div>
+                        <div class="text-center">
+                            <div class="text-4xl font-bold text-blue-600">&lt;10kb</div>
+                            <div class="text-gray-600 mt-2">Script Size</div>
+                        </div>
+                        <div class="text-center">
+                            <div class="text-4xl font-bold text-blue-600">50k+</div>
+                            <div class="text-gray-600 mt-2">Websites Protected</div>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- Add Performance Stats Section -->
-            <div class="bg-white p-6 rounded-lg shadow mt-8">
-                <h2 class="text-2xl font-bold mb-6">Performance & Statistics</h2>
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                    <div class="text-center">
-                        <div class="text-4xl font-bold text-blue-600">99.9%</div>
-                        <div class="text-gray-600 mt-2">Detection Accuracy</div>
-                    </div>
-                    <div class="text-center">
-                        <div class="text-4xl font-bold text-blue-600">&lt;10kb</div>
-                        <div class="text-gray-600 mt-2">Script Size</div>
-                    </div>
-                    <div class="text-center">
-                        <div class="text-4xl font-bold text-blue-600">50k+</div>
-                        <div class="text-gray-600 mt-2">Websites Protected</div>
-                    </div>
-                </div>
+            <!-- Bottom Display Ad -->
+            <div class="my-8">
+                <ins class="adsbygoogle"
+                    style="display:block"
+                    data-ad-client="ca-pub-9354746037074515"
+                    data-ad-slot="4878379786"
+                    data-ad-format="rectangle"
+                    data-full-width-responsive="true"></ins>
             </div>
         </div>
     </main>
+
+    <!-- Pre-Footer Display Ad -->
+    <div class="w-full py-4 bg-white shadow-sm">
+        <ins class="adsbygoogle"
+            style="display:block"
+            data-ad-client="ca-pub-9354746037074515"
+            data-ad-slot="4878379787"
+            data-ad-format="auto"
+            data-full-width-responsive="true"></ins>
+    </div>
 
     <!-- Footer -->
     <footer class="bg-white shadow-sm mt-auto">
@@ -466,5 +563,26 @@
 
     <!-- Add share.js -->
     <script src="/js/share.js"></script>
+
+    <!-- Auto Ads for Dynamic Placement -->
+    <script>
+        (adsbygoogle = window.adsbygoogle || []).push({
+            google_ad_client: "ca-pub-9354746037074515",
+            enable_page_level_ads: true
+        });
+    </script>
+
+    <script>
+        // Initialize all ads after DOM load
+        window.addEventListener('load', function() {
+            document.querySelectorAll('.adsbygoogle').forEach((ad) => {
+                try {
+                    (adsbygoogle = window.adsbygoogle || []).push({});
+                } catch (e) {
+                    console.error('AdSense error:', e);
+                }
+            });
+        });
+    </script>
 </body>
 </html>
