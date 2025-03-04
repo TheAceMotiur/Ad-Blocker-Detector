@@ -59,8 +59,8 @@
         </nav>
     </header>
     <!-- Main Content -->
-    <main class="flex-grow">
-        <!-- Top Full-Width Banner Ad -->
+    <main class="flex-grow relative">
+        <!-- Top Banner Ad -->
         <div class="w-full py-4 bg-white shadow-sm">
             <ins class="adsbygoogle"
                 style="display:block"
@@ -70,119 +70,94 @@
                 data-full-width-responsive="true"></ins>
         </div>
 
-        <!-- Left Sidebar Ad -->
-        <div class="hidden xl:block fixed left-4 top-20 w-[160px]">
-            <ins class="adsbygoogle"
-                style="display:inline-block;width:160px;height:600px"
-                data-ad-client="ca-pub-9354746037074515"
-                data-ad-slot="1234567891"></ins>
-        </div>
-
-        <!-- Right Sidebar Ad -->
-        <div class="hidden xl:block fixed right-4 top-20 w-[160px]">
-            <ins class="adsbygoogle"
-                style="display:inline-block;width:160px;height:600px"
-                data-ad-client="ca-pub-9354746037074515"
-                data-ad-slot="1234567892"></ins>
-        </div>
-
-        <!-- Main Content Container with Padding for Sidebars -->
-        <div class="max-w-4xl mx-auto px-4 sm:px-6 xl:px-[200px]">
-            <!-- Secondary Banner Ad -->
-            <div class="py-4">
-                <ins class="adsbygoogle"
-                    style="display:block"
-                    data-ad-client="ca-pub-9354746037074515"
-                    data-ad-slot="4878379784"
-                    data-ad-format="auto"
-                    data-full-width-responsive="true"></ins>
-            </div>
-
-            <!-- Social Share Buttons -->
-            <div class="bg-white p-4 rounded-lg shadow mb-8">
-                <h4 class="text-sm font-semibold mb-3">Share our Privacy Policy:</h4>
-                <div class="flex space-x-4">
-                    <button onclick="shareOnSocial('twitter')" class="text-blue-400 hover:text-blue-600">
-                        <i class="fab fa-twitter fa-lg"></i>
-                    </button>
-                    <button onclick="shareOnSocial('facebook')" class="text-blue-600 hover:text-blue-800">
-                        <i class="fab fa-facebook fa-lg"></i>
-                    </button>
-                    <button onclick="shareOnSocial('linkedin')" class="text-blue-700 hover:text-blue-900">
-                        <i class="fab fa-linkedin fa-lg"></i>
-                    </button>
-                    <button onclick="shareOnSocial('whatsapp')" class="text-green-500 hover:text-green-700">
-                        <i class="fab fa-whatsapp fa-lg"></i>
-                    </button>
-                </div>
-            </div>
-
-            <div class="bg-white p-8 rounded-lg shadow">
-                <h1 class="text-3xl font-bold mb-8">Privacy Policy</h1>
+        <!-- Main Content Container with Sidebar Space -->
+        <div class="container mx-auto px-4 xl:px-0 flex flex-col xl:flex-row gap-8 py-8">
+            <!-- Left Content Area -->
+            <div class="flex-grow max-w-4xl">
+                <!-- Privacy Content -->
+                <div class="bg-white p-8 rounded-lg shadow">
+                    <h1 class="text-3xl font-bold mb-8">Privacy Policy</h1>
                 
-                <div class="space-y-6">
-                    <section>
-                        <h2 class="text-xl font-semibold mb-3">Information We Collect</h2>
-                        <p class="text-gray-600">We do not collect any personal information from visitors to our website. Our Ad Blocker Detector tool runs entirely in your browser and does not transmit any data to our servers.</p>
-                    </section>
+                    <div class="space-y-6">
+                        <section>
+                            <h2 class="text-xl font-semibold mb-3">Information We Collect</h2>
+                            <p class="text-gray-600">We do not collect any personal information from visitors to our website. Our Ad Blocker Detector tool runs entirely in your browser and does not transmit any data to our servers.</p>
+                        </section>
 
-                    <section>
-                        <h2 class="text-xl font-semibold mb-3">How We Use Your Information</h2>
-                        <p class="text-gray-600">Since we don't collect personal information, we don't use your data for any purpose. The Ad Blocker Detector tool generates code that runs locally in your browser.</p>
-                    </section>
+                        <section>
+                            <h2 class="text-xl font-semibold mb-3">How We Use Your Information</h2>
+                            <p class="text-gray-600">Since we don't collect personal information, we don't use your data for any purpose. The Ad Blocker Detector tool generates code that runs locally in your browser.</p>
+                        </section>
 
-                    <section>
-                        <h2 class="text-xl font-semibold mb-3">Cookies</h2>
-                        <p class="text-gray-600">We do not use cookies or any other tracking technologies on our website.</p>
-                    </section>
+                        <section>
+                            <h2 class="text-xl font-semibold mb-3">Cookies</h2>
+                            <p class="text-gray-600">We do not use cookies or any other tracking technologies on our website.</p>
+                        </section>
 
-                    <section>
-                        <h2 class="text-xl font-semibold mb-3">Third-Party Services</h2>
-                        <p class="text-gray-600">We use CDN services to deliver essential libraries like TailwindCSS and Vue.js. These services may have their own privacy policies.</p>
-                    </section>
+                        <section>
+                            <h2 class="text-xl font-semibold mb-3">Third-Party Services</h2>
+                            <p class="text-gray-600">We use CDN services to deliver essential libraries like TailwindCSS and Vue.js. These services may have their own privacy policies.</p>
+                        </section>
 
-                    <section>
-                        <h2 class="text-xl font-semibold mb-3">Contact Us</h2>
-                        <p class="text-gray-600">If you have any questions about this Privacy Policy, please contact us at privacy@freenetly.com</p>
-                    </section>
+                        <section>
+                            <h2 class="text-xl font-semibold mb-3">Contact Us</h2>
+                            <p class="text-gray-600">If you have any questions about this Privacy Policy, please contact us at privacy@freenetly.com</p>
+                        </section>
 
-                    <section class="pt-4">
-                        <p class="text-sm text-gray-500">Last updated: January 2024</p>
-                    </section>
-                </div>
+                        <section class="pt-4">
+                            <p class="text-sm text-gray-500">Last updated: January 2024</p>
+                        </section>
+                    </div>
 
-                <!-- Mid-Content Display Ad -->
-                <div class="my-8">
-                    <ins class="adsbygoogle"
-                        style="display:block"
-                        data-ad-client="ca-pub-9354746037074515"
-                        data-ad-slot="4878379785"
-                        data-ad-format="rectangle"
-                        data-full-width-responsive="true"></ins>
-                </div>
+                    <!-- Mid-Content Display Ad -->
+                    <div class="my-8 p-4 bg-gray-50 rounded">
+                        <ins class="adsbygoogle"
+                            style="display:block"
+                            data-ad-client="ca-pub-9354746037074515"
+                            data-ad-slot="4878379785"
+                            data-ad-format="rectangle"
+                            data-full-width-responsive="true"></ins>
+                    </div>
 
-                <!-- In-article Native Ad -->
-                <div class="my-8">
-                    <ins class="adsbygoogle"
-                        style="display:block; text-align:center;"
-                        data-ad-layout="in-article"
-                        data-ad-format="fluid"
-                        data-ad-client="ca-pub-9354746037074515"
-                        data-ad-slot="1234567893"></ins>
+                    <!-- In-article Native Ad -->
+                    <div class="my-8">
+                        <ins class="adsbygoogle"
+                            style="display:block; text-align:center;"
+                            data-ad-layout="in-article"
+                            data-ad-format="fluid"
+                            data-ad-client="ca-pub-9354746037074515"
+                            data-ad-slot="1234567893"></ins>
+                    </div>
                 </div>
             </div>
+
+            <!-- Right Sidebar -->
+            <div class="hidden xl:block w-[300px] space-y-4">
+                <!-- Sticky Sidebar Container -->
+                <div class="sticky top-4">
+                    <!-- Sidebar Ad Unit -->
+                    <div class="bg-white p-4 rounded-lg shadow">
+                        <ins class="adsbygoogle"
+                            style="display:block"
+                            data-ad-client="ca-pub-9354746037074515"
+                            data-ad-slot="1234567891"
+                            data-ad-format="vertical"
+                            data-full-width-responsive="false"></ins>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Bottom Banner Ad -->
+        <div class="w-full py-4 bg-white shadow-sm mt-8">
+            <ins class="adsbygoogle"
+                style="display:block"
+                data-ad-client="ca-pub-9354746037074515"
+                data-ad-slot="4878379787"
+                data-ad-format="auto"
+                data-full-width-responsive="true"></ins>
         </div>
     </main>
-
-    <!-- Pre-Footer Display Ad -->
-    <div class="w-full py-4 bg-white shadow-sm">
-        <ins class="adsbygoogle"
-            style="display:block"
-            data-ad-client="ca-pub-9354746037074515"
-            data-ad-slot="4878379787"
-            data-ad-format="auto"
-            data-full-width-responsive="true"></ins>
-    </div>
 
     <!-- Footer -->
     <footer class="bg-white shadow-sm mt-auto">
