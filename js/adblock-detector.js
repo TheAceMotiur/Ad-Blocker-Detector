@@ -6,247 +6,112 @@ class AdBlockDetector {
             blur: options.blur ?? true,
             blurAmount: options.blurAmount ?? 5,
             opacity: options.opacity ?? 0.95,
-            checkInterval: 1000,
-            minChecks: 2,
             watermark: options.watermark ?? true,
             watermarkText: options.watermarkText ?? 'Protected by FreeNetly',
-            watermarkStyle: options.watermarkStyle ?? 'light', // 'light' or 'dark'
-            customRules: options.customRules ?? [],
-            generatorUrl: options.generatorUrl ?? 'index.html'
+            watermarkStyle: options.watermarkStyle ?? 'light'
         };
 
         this.detected = false;
         this.warningElement = null;
-        this.checkCount = 0;
-        this.positiveChecks = 0;
-        this.detectionRules = [];
         this.adNetworks = [
-            { name: 'Google Ads', urls: [
-                'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js',
-                'https://googleads.g.doubleclick.net/pagead/id',
-                'https://securepubads.g.doubleclick.net/gpt/pubads_impl_*'
-            ]},
-            { name: 'Media.net', urls: [
-                'https://contextual.media.net/dmedianet.js',
-                'https://static.media.net/ads.js'
-            ]},
-            { name: 'Amazon Associates', urls: [
-                'https://ir-na.amazon-adsystem.com/e/ir',
-                'https://z-na.amazon-adsystem.com/widgets/'
-            ]},
-            { name: 'Taboola', urls: [
-                'https://cdn.taboola.com/libtrc/loader.js',
-                'https://trc.taboola.com/'
-            ]},
-            { name: 'Outbrain', urls: [
-                'https://widgets.outbrain.com/outbrain.js'
-            ]},
-            { name: 'AdRoll', urls: [
-                'https://s.adroll.com/j/roundtrip.js'
-            ]},
-            { name: 'PropellerAds', urls: [
-                'https://propu.sh/pfe/current/tag.min.js'
-            ]}
+            'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js',
+            'https://doubleclick.net/instream/ad_status.js'
         ];
 
-        this.commonAdClassNames = [
-            'ad', 'ads', 'adsbox', 'ad-box', 'ad-placement', 'doubleclick-ad', 
-            'ad-container', 'advertisement', 'google-ad', 'sponsored-content',
-            'promoted-content', 'pub_300x250', 'pub_300x250m', 'pub_728x90',
-            'text-ad', 'text_ad', 'text_ads', 'text-ads'
+        this.adClassNames = [
+            'ad', 'ads', 'advertisement', 'banner-ad', 'google-ad'
         ];
     }
 
     async init() {
-        // Load custom rules from generator if available
-        await this.loadCustomRules();
-        
-        // Initial check
-        await this.checkAdBlocker();
-        
-        // Continuous monitoring
-        setInterval(() => this.checkAdBlocker(), this.options.checkInterval);
-    }
-
-    async loadCustomRules() {
-        try {
-            const response = await fetch(this.options.generatorUrl, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(this.options)
-            });
-            
-            const data = await response.json();
-            if (data.rules) {
-                this.detectionRules = [...this.options.customRules, ...data.rules];
-            }
-        } catch (error) {
-            console.warn('Failed to load custom rules:', error);
+        // Wait for page to load
+        if (document.readyState !== 'complete') {
+            await new Promise(resolve => window.addEventListener('load', resolve, { once: true }));
         }
+        
+        // Simple check after page loads
+        setTimeout(() => this.checkAdBlocker(), 1000);
     }
 
     async checkAdBlocker() {
-        const results = await Promise.all([
-            this.checkAdNetworks(),
-            this.checkBaitElements(),
-            this.checkNetworkRequests(),
-            this.checkDOMManipulation(),
-            this.checkPixelAds(),
-            this.checkIframeAds()
-        ]);
-
-        this.checkCount++;
-        if (results.some(Boolean)) {
-            this.positiveChecks++;
-        }
-
-        if (this.checkCount >= this.options.minChecks) {
-            const isBlocked = this.positiveChecks / this.checkCount > 0.5;
-            if (isBlocked !== this.detected) {
-                this.detected = isBlocked;
-                if (isBlocked) {
-                    this.showWarning();
-                } else {
-                    this.hideWarning();
-                }
+        try {
+            // Method 1: Check if ad scripts load
+            const scriptBlocked = await this.checkAdScript();
+            
+            // Method 2: Check if ad elements are hidden
+            const elementsHidden = this.checkAdElements();
+            
+            // Simple logic: if either method detects blocking, show warning
+            const isBlocked = scriptBlocked || elementsHidden;
+            
+            if (isBlocked && !this.detected) {
+                this.detected = true;
+                this.showWarning();
+            } else if (!isBlocked && this.detected) {
+                this.detected = false;
+                this.hideWarning();
             }
+        } catch (error) {
+            console.log('Ad blocker check failed:', error);
         }
     }
 
-    async checkAdNetworks() {
-        const checks = this.adNetworks.flatMap(network => 
-            network.urls.map(url => this.checkAdResource(url))
-        );
-        const results = await Promise.all(checks);
-        return results.some(Boolean);
+    async checkAdScript() {
+        return new Promise((resolve) => {
+            const testScript = document.createElement('script');
+            testScript.src = this.adNetworks[0]; // Google AdSense script
+            testScript.async = true;
+            
+            testScript.onload = () => {
+                testScript.remove();
+                resolve(false); // Script loaded = no ad blocker
+            };
+            
+            testScript.onerror = () => {
+                testScript.remove();
+                resolve(true); // Script blocked = ad blocker detected
+            };
+            
+            document.head.appendChild(testScript);
+            
+            // Timeout after 3 seconds
+            setTimeout(() => {
+                if (testScript.parentNode) {
+                    testScript.remove();
+                    resolve(true); // Assume blocked if timeout
+                }
+            }, 3000);
+        });
     }
 
-    async checkAdResource(url) {
-        try {
-            const resource = document.createElement('script');
-            resource.src = url;
-            resource.async = true;
-
-            const blocked = await new Promise((resolve) => {
-                resource.onload = () => resolve(false);
-                resource.onerror = () => resolve(true);
-                document.head.appendChild(resource);
-                setTimeout(() => resolve(true), 1000);
-            });
-            resource.remove();
-            return blocked;
-        } catch {
-            return true;
-        }
-    }
-
-    async checkBaitElements() {
-        const results = await Promise.all(
-            this.commonAdClassNames.map(className => this.createBaitElement(className))
-        );
-        return results.some(Boolean);
-    }
-
-    async createBaitElement(className) {
-        const bait = document.createElement('div');
-        bait.className = className;
-        bait.style.cssText = `
+    checkAdElements() {
+        // Create a test ad element
+        const testAd = document.createElement('div');
+        testAd.className = 'ad advertisement';
+        testAd.style.cssText = `
             position: absolute !important;
-            top: -9999px !important;
-            left: -9999px !important;
-            height: 1px !important;
-            width: 1px !important;
-            opacity: 0.01 !important;
+            top: -1000px !important;
+            left: -1000px !important;
+            width: 300px !important;
+            height: 250px !important;
         `;
+        testAd.innerHTML = '<div class="banner">Ad Content</div>';
         
-        // Add fake ad content
-        bait.innerHTML = '<img src="data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==" class="ad" />';
+        document.body.appendChild(testAd);
         
-        document.body.appendChild(bait);
-        await new Promise(resolve => setTimeout(resolve, 100));
-
-        const isBlocked = this.checkElementVisibility(bait);
-        bait.remove();
-        return isBlocked;
-    }
-
-    checkElementVisibility(element) {
-        const style = window.getComputedStyle(element);
-        return !element.offsetParent ||
-               style.display === 'none' ||
-               style.visibility === 'hidden' ||
-               style.opacity === '0' ||
-               element.getBoundingClientRect().height === 0;
-    }
-
-    async checkDOMManipulation() {
-        const testDiv = document.createElement('div');
-        testDiv.innerHTML = `
-            <div class="advertising">
-                <img src="data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==" class="banner">
-            </div>
-        `;
-        document.body.appendChild(testDiv);
-
-        await new Promise(resolve => setTimeout(resolve, 100));
-        const wasModified = !testDiv.querySelector('.advertising') || 
-                           !testDiv.querySelector('.banner');
-        testDiv.remove();
-        return wasModified;
-    }
-
-    async checkPixelAds() {
-        const pixel = document.createElement('img');
-        pixel.src = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAACklEQVR4nGMAAQAABQABDQottAAAAABJRU5ErkJggg==';
-        pixel.className = 'ad-pixel';
-        pixel.style.position = 'absolute';
+        // Check if element is hidden by ad blocker
+        setTimeout(() => {
+            const style = window.getComputedStyle(testAd);
+            const isHidden = style.display === 'none' || 
+                           style.visibility === 'hidden' || 
+                           testAd.offsetHeight === 0;
+            
+            testAd.remove();
+            return isHidden;
+        }, 100);
         
-        document.body.appendChild(pixel);
-        await new Promise(resolve => setTimeout(resolve, 100));
-        const isBlocked = this.checkElementVisibility(pixel);
-        pixel.remove();
-        return isBlocked;
-    }
-
-    async checkIframeAds() {
-        const iframe = document.createElement('iframe');
-        iframe.src = 'about:blank';
-        iframe.style.cssText = 'position: absolute; top: -9999px; width: 1px; height: 1px;';
-        iframe.sandbox = 'allow-same-origin allow-scripts';
-        
-        document.body.appendChild(iframe);
-        try {
-            iframe.contentWindow.document.write('<div class="banner_ad"></div>');
-            await new Promise(resolve => setTimeout(resolve, 100));
-            const isBlocked = !iframe.contentWindow || 
-                            !iframe.contentWindow.document.querySelector('.banner_ad');
-            iframe.remove();
-            return isBlocked;
-        } catch {
-            iframe.remove();
-            return true;
-        }
-    }
-
-    async checkNetworkRequests() {
-        const urls = [
-            'https://googleads.g.doubleclick.net/pagead/id',
-            'https://securepubads.g.doubleclick.net/gpt/pubads_impl_*',
-            'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js'
-        ];
-
-        try {
-            const results = await Promise.all(urls.map(url => 
-                fetch(url, { mode: 'no-cors', cache: 'no-cache' })
-                    .then(() => false)
-                    .catch(() => true)
-            ));
-            return results.some(Boolean);
-        } catch {
-            return true;
-        }
+        // Return false for now, the setTimeout will handle the actual check
+        return false;
     }
 
     showWarning() {
@@ -287,20 +152,10 @@ class AdBlockDetector {
         `;
 
         warning.appendChild(messageBox);
-
-        // Protection mechanisms
-        this.protectWarningElement(warning);
-        this.protectWarningElement(messageBox);
-
         document.body.appendChild(warning);
         this.warningElement = warning;
-
-        // Enhanced visibility protection
-        this.setupVisibilityProtection(warning);
-
-        // Add additional protection
-        this.preventDevTools();
-        this.preventAdBlockerScripts();
+        
+        console.log('Ad blocker detected - showing warning');
     }
 
     getWatermarkHTML() {
@@ -342,100 +197,12 @@ class AdBlockDetector {
         `;
     }
 
-    protectWarningElement(element) {
-        Object.defineProperties(element, {
-            remove: { value: () => this.handleRemovalAttempt() },
-            style: {
-                get: function() { return this._style; },
-                set: function() { return false; }
-            },
-            innerHTML: {
-                get: function() { return this._innerHTML; },
-                set: function() { return false; }
-            },
-            className: {
-                get: function() { return this._className; },
-                set: function() { return false; }
-            }
-        });
-    }
-
-    setupVisibilityProtection(element) {
-        const observer = new MutationObserver(() => {
-            if (!document.body.contains(element)) {
-                document.body.appendChild(element);
-            }
-            element.style.display = 'flex';
-            element.style.visibility = 'visible';
-            element.style.opacity = '1';
-        });
-
-        observer.observe(document.body, {
-            childList: true,
-            subtree: true,
-            attributes: true
-        });
-
-        // Periodic check
-        setInterval(() => {
-            if (!document.body.contains(element)) {
-                document.body.appendChild(element);
-            }
-        }, 100);
-    }
-
-    preventDevTools() {
-        const handler = setInterval(() => {
-            const widthThreshold = window.outerWidth - window.innerWidth > 160;
-            const heightThreshold = window.outerHeight - window.innerHeight > 160;
-            if(widthThreshold || heightThreshold) {
-                this.handleRemovalAttempt();
-            }
-        }, 1000);
-
-        this.cleanup = () => {
-            clearInterval(handler);
-            // ...existing cleanup code...
-        };
-    }
-
-    preventAdBlockerScripts() {
-        const observer = new MutationObserver((mutations) => {
-            mutations.forEach((mutation) => {
-                mutation.addedNodes.forEach((node) => {
-                    if (node.tagName === 'SCRIPT') {
-                        const src = node.src.toLowerCase();
-                        if (src.includes('adblock') || src.includes('ublock')) {
-                            node.remove();
-                        }
-                    }
-                });
-            });
-        });
-
-        observer.observe(document.documentElement, {
-            childList: true,
-            subtree: true
-        });
-    }
-
-    handleRemovalAttempt() {
-        this.showWarning();
-        if (this.options.forceReload) {
-            setTimeout(() => location.reload(), 100);
-        }
-    }
-
     hideWarning() {
         if (this.warningElement) {
             this.warningElement.remove();
             this.warningElement = null;
+            console.log('Ad blocker not detected - hiding warning');
         }
-    }
-
-    cleanup() {
-        this.hideWarning();
-        clearInterval(this.interval);
     }
 }
 
