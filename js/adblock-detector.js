@@ -178,7 +178,7 @@ class AdBlockDetector {
                 text-decoration: none !important;
                 transition: opacity 0.2s ease !important;
             ">
-                <a href="https://onenetly.com" 
+                <a href="https://freenetly.com" 
                    target="_blank" 
                    style="
                         color: inherit !important;
