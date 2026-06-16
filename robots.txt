@@ -1,6 +1,6 @@
 User-agent: *
 Allow: /
-Sitemap: https://freenetly.com/sitemap.xml
+Sitemap: https://onenetly.com/sitemap.xml
 
 # Optimize crawling
 Disallow: /js/

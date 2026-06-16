@@ -7,7 +7,7 @@ class AdBlockDetector {
             blurAmount: options.blurAmount ?? 5,
             opacity: options.opacity ?? 0.95,
             watermark: options.watermark ?? true,
-            watermarkText: options.watermarkText ?? 'Protected by FreeNetly',
+            watermarkText: options.watermarkText ?? 'Protected by OneNetly',
             watermarkStyle: options.watermarkStyle ?? 'light'
         };
 
@@ -178,7 +178,7 @@ class AdBlockDetector {
                 text-decoration: none !important;
                 transition: opacity 0.2s ease !important;
             ">
-                <a href="https://freenetly.com" 
+                <a href="https://onenetly.com" 
                    target="_blank" 
                    style="
                         color: inherit !important;
